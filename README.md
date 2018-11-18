@@ -23,7 +23,46 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+#### Get a Watchlist:
+
+```
+  watchlist = IMDB::Watchlist.get(url|user_id)
+
+  eg:
+
+  watchlist = IMDB::Watchlist.get("https://www.imdb.com/user/urXXXXXXX/watchlist")
+  watchlist = IMDB::Watchlist.get("urXXXXXXX")
+
+  watchlist.name  # name of list
+  watchlist.id    # imdb id for the list
+  watchlist.items # array of watchlist items (imdb_id, title, position, added_at)
+```
+
+where:
+* user_id is the urXXXXX part in the URL:  https://www.imdb.com/user/urXXXXXXX/watchlist
+* Simpler just to supply the entire URL
+
+
+#### Get a User list:
+
+```
+  list = IMDB::List.get(url|list_id)
+
+  eg:
+
+  list = IMDB::List.get("https://www.imdb.com/list/ls040518607")
+  list = IMDB::List.get("ls040518607")
+```
+
+#### Get info about an array of IMDBids
+
+```
+  medias = IMDB::Media.get(<array of IMDBids>)
+
+  eg:
+
+  medias = IMDB::Media.get(["tt2226597", "tt0974015"])
+```
 
 ## Development
 
@@ -38,3 +77,6 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## TODO
+

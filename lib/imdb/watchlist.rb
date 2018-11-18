@@ -21,17 +21,11 @@ module IMDB
 
     def initialize(list, titles)
       @list   = list
+      @name   = list.fetch('name')
+      @id     = list.fetch('id')
       @titles = titles
       @items  = parse_list_items
       parse_titles
-    end
-
-    def name
-      list.fetch('name')
-    end
-
-    def id
-      list.fetch('id')
     end
 
     def to_hash
@@ -54,6 +48,7 @@ module IMDB
       @imdb_ids ||= @items.map {|x| x['imdb_id']}
     end
 
+
     private
 
     def title(imdb_id)
@@ -65,10 +60,10 @@ module IMDB
       @list['items'].map do |entry|
         id = entry['const']
         {
-          "position" => entry['position'],
-          "added"    => Date.parse(entry['added']),
           "imdb_id"  => id,
-          "title"    => nil
+          "title"    => nil,
+          "position" => entry['position'],
+          "added_at" => Date.parse(entry['added'])
         }
       end
     end
