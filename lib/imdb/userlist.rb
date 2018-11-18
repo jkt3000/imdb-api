@@ -1,9 +1,9 @@
 module IMDB
 
-  class Userlist
+  class Userlist < ListBase
 
     LIST_URL = "https://www.imdb.com/list/LISTID"
-    DATA_URL = "https://www.imdb.com/title/data"
+    LIST_KEY = 'itemListElement'
 
     def self.get(url)
       url       = sanitize_url(url)
@@ -16,82 +16,27 @@ module IMDB
     end
 
 
-    attr_reader :id, :name, :description, :list, :items, :titles
-
     def initialize(list_hash, id: nil)
       @id    = id
       @name  = list_hash.fetch('name', nil)
       @description = list_hash.fetch('description', nil)
       @list  = list_hash.fetch('about',{})
-      @items = parse_list_items('itemListElement')
+      @items = parse_list_items(LIST_KEY)
       @titles = {}
       parse_titles
     end
 
-    def imdb_ids
-      @imdb_ids ||= @items.map {|x| x['imdb_id']}
-    end
-
-    def to_hash
-      {
-        'name'  => name,
-        'id'    => id,
-        'items' => items
-      }
-    end
-
-    def inspect
-      "<#{self.class.name} name=\"#{name}\" count=\"#{items.count}\">"
-    end
 
     private
-
-
-    def title(imdb_id)
-      return unless movie = @titles[imdb_id]
-      movie['primary']['title']
-    end
-
-
-    def parse_list_items(key)
-      @list[key].map do |entry|
-        id = entry['url'].scan(/\/title\/(.+)\//).first.first
-        {
-          "imdb_id"  => id,
-          "title"    => nil,
-          "position" => entry['position'],
-          "added_at" => nil
-        }
-      end
-    end
-
-    def parse_titles
-      import_all_titles if missing_titles?
-      (0..items.count-1).each do |index|
-        @items[index]['title'] = title(@items[index]['imdb_id'])
-      end
-    end
-
-
-    def import_all_titles
-      response = RestClient.get(DATA_URL, params: {ids: imdb_ids.join(",")})
-      list = JSON.parse(response.body)
-      entries = list.inject({}) do |hash, entry|
-        hash[entry.first] = entry.last['title']
-        hash
-      end
-      @titles.merge!(entries)
-    end
-
-    def missing_titles?
-      (imdb_ids & titles.keys) != imdb_ids
+    
+    def id_from_entry(entry)
+      entry['url'].scan(/\/title\/(.+)\//).first.first
     end
 
     def self.sanitize_url(url)
       url =~ URI::regexp ? url : Userlist::LIST_URL.gsub(/LISTID/, url)
     end
   end
-
 end
 
 # Format of response
