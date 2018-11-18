@@ -8,7 +8,6 @@ module IMDB
     attr_reader :id, :name, :description, :items, :list, :titles
 
 
-
     def to_hash
       {
         'id'          => id,

@@ -33,9 +33,10 @@ Or install it yourself as:
   watchlist = IMDB::Watchlist.get("https://www.imdb.com/user/urXXXXXXX/watchlist")
   watchlist = IMDB::Watchlist.get("urXXXXXXX")
 
-  watchlist.name  # name of list
-  watchlist.id    # imdb id for the list
-  watchlist.items # array of watchlist items (imdb_id, title, position, added_at)
+  watchlist.name    # name of list
+  watchlist.id      # imdb id for the list
+  watchlist.items   # array of watchlist items (imdb_id, title, position, added_at)
+  watchlist.to_hash # hash of list with keys ['id', 'name', 'description', 'items']
 ```
 
 where:
@@ -46,12 +47,14 @@ where:
 #### Get a User list:
 
 ```
-  list = IMDB::List.get(url|list_id)
+  list = IMDB::Userlist.get(url|list_id)
 
   eg:
 
-  list = IMDB::List.get("https://www.imdb.com/list/ls040518607")
-  list = IMDB::List.get("ls040518607")
+  list = IMDB::Userlist.get("https://www.imdb.com/list/ls040518607")
+  list = IMDB::Userlist.get("ls040518607")
+
+  Same methods as a Watchlist
 ```
 
 #### Get info about an array of IMDBids
@@ -80,3 +83,5 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## TODO
 
+* tests
+* Extract a Media class to query imdb for JSON response for titles query
