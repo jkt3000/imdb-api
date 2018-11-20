@@ -2,6 +2,7 @@ require 'nokogiri'
 require 'rest-client'
 require 'json'
 require "imdb/version"
+require 'imdb/media'
 require 'imdb/list_base'
 require "imdb/watchlist"
 require "imdb/userlist"

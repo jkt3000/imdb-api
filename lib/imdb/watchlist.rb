@@ -2,7 +2,7 @@ module IMDB
 
   class Watchlist < ListBase
 
-    LIST_URL       = BASE_URL + "/user/USERID/watchlist"
+    LIST_URL       = Media::BASE_URL + "/user/USERID/watchlist"
     RESPONSE_REGEX = /IMDbReactInitialState\.push\((.*)\)/
     LIST_KEY       = 'items'
 

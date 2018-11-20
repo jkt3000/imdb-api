@@ -2,9 +2,6 @@ module IMDB
 
   class ListBase
 
-    BASE_URL  = "https://www.imdb.com"
-    TITLE_URL = BASE_URL + "/title/data"
-    
     attr_reader :id, :name, :description, :items, :list, :titles
 
 
@@ -62,13 +59,7 @@ module IMDB
     end
 
     def import_all_titles
-      response = RestClient.get(TITLE_URL, params: {ids: imdb_ids.join(",")})
-      list = JSON.parse(response.body)
-      entries = list.inject({}) do |hash, entry|
-        hash[entry.first] = entry.last['title']
-        hash
-      end
-      @titles.merge!(entries)
+      @titles.merge! Media.get(imdb_ids)
     end
 
     def missing_titles?

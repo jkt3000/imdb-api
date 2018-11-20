@@ -2,7 +2,7 @@ module IMDB
 
   class Userlist < ListBase
 
-    LIST_URL = "https://www.imdb.com/list/LISTID"
+    LIST_URL = Media::BASE_URL + "/list/LISTID"
     LIST_KEY = 'itemListElement'
 
     def self.get(url)
